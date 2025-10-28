@@ -1,0 +1,21 @@
+<style>
+.app {
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: 200px 1fr;
+}
+
+@media (max-width: 800px) {
+  .app {
+    grid-template-areas:
+      "content"
+      "sidebar";
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="app">
+  <aside style="grid-area:sidebar; background:#eee;">Sidebar</aside>
+  <main style="grid-area:content;">Main Content</main>
+</div>
