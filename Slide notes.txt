@@ -1,9 +1,0 @@
-Fluid Type
---------------------------------------------------------------
-clamp(MIN, PREFERRED, MAX) → sets a flexible value that:
-won't go below MIN and won't go above MAX
-Prefers the middle value (PREFERRED), which can be dynamic.
-
-font-size: clamp(1rem, 2vw + 0.5rem, 2rem);
-Preferred value adapts to the viewport width without any media queries
-
