@@ -1,0 +1,933 @@
+--------------
+File: 1_Fluid_Font.html
+
+<style>
+h2 {
+  font-size: clamp(1rem, 2vw + 0.5rem, 2rem);
+  text-align: center;
+}
+p {
+  max-width: 600px;
+  margin: auto;
+  line-height: 1.5;
+}
+</style>
+
+<h2>Fluid Type Example</h2>
+<p>
+  Resize the browser window — notice how the heading scales smoothly between 1rem and 2rem,
+  adapting to the viewport width without any media queries.
+</p>
+<p>
+  <h3>Explanation:</h3> 
+clamp(min, preferred, max) picks a size that scales fluidly between min and max based on viewport width.
+</p>
+
+--------------
+File: 2_Container_Width_Adaptation.html
+
+<style>
+.wrapper {
+  width: 60%;
+  margin: auto;
+  border: 2px dashed #ccc;
+  resize: horizontal;
+  overflow: auto;
+  container-type: inline-size; /* <-- define the container */
+}
+
+.card {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+/* When the wrapper (container) is at least 400px wide */
+@container (min-width: 400px) {
+  .card {
+    background: #d8f5d0; /* light green */
+  }
+}
+</style>
+
+<div class="wrapper">
+  <div class="card">
+    <h2>Container Query Demo</h2>
+    <p>Drag the right edge of the box to resize it.  
+       When the container reaches 400px wide, the background changes.</p>
+  </div>
+</div>
+
+--------------
+File: 3_Stacking_Containers.html
+
+<style>
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.card {
+  container-type: inline-size;
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@container (min-width: 400px) {
+  .card-content {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.card img {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 8px;
+}
+
+.card h2 {
+  font-size: clamp(1rem, 2vw + 0.5rem, 2rem);
+  margin: 0;
+}
+</style>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-content">
+      <img src="https://picsum.photos/150?1" alt="">
+      <h2>Card One</h2>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <img src="https://picsum.photos/150?2" alt="">
+      <h2>Card Two</h2>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <img src="https://picsum.photos/150?3" alt="">
+      <h2>Card Three</h2>
+    </div>
+  </div>
+</div>
+
+  <h3>Explanation</h3>
+<pre>
+.grid uses auto-fit and minmax() to make a fluid grid.
+Each .card defines its own container query.
+When a card’s width passes 400px, it switches from a vertical layout to a horizontal one.
+Each card adapts independently — resizing the page shows some stacked and others side-by-side.
+</pre>
+
+--------------
+File: 4_Responsive_SPA_Layout_Grid.html
+
+<style>
+.app {
+  display: grid;
+  grid-template-areas: "sidebar content";
+  grid-template-columns: 200px 1fr;
+}
+
+@media (max-width: 800px) {
+  .app {
+    grid-template-areas:
+      "content"
+      "sidebar";
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="app">
+  <aside style="grid-area:sidebar; background:#eee;">Sidebar</aside>
+  <main style="grid-area:content;">Main Content</main>
+</div>
+
+--------------
+File: 5_Fixed_Container_Width.html
+
+<style>
+.wrapper {
+  width: 60%;
+  margin: auto;
+  border: 2px dashed #ccc;
+  resize: horizontal;
+  overflow: auto;
+  container-type: inline-size; /* <-- define the container */
+}
+
+.card {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+/* When the wrapper (container) is at least 400px wide */
+@container (min-width: 400px) {
+  .card {
+    background: #d8f5d0; /* light green */
+  }
+}
+</style>
+
+<div class="wrapper">
+  <div class="card">
+    <h2>Container Query Demo</h2>
+    <p>Drag the right edge of the box to resize it.  
+       When the container reaches 400px wide, the background changes.</p>
+  </div>
+</div>
+
+--------------
+File: 6a_Image_Adaptation.html
+
+<picture>
+  <!-- Large screens (>=800px) -->
+  <source media="(min-width: 800px)" 
+          srcset="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&h=300&w=1000">
+  
+  <!-- Medium screens (500px–799px) -->
+  <source media="(min-width: 500px)" 
+          srcset="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&h=300&w=700">
+  
+  <!-- Small screens (<500px) -->
+  <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&h=300&w=400"
+       alt="Responsive landscape" style="width:100%; border-radius:8px;">
+</picture>
+
+<h3>Explanation</h3>
+<pre>
+    The same image, just served at different widths: 1000px, 700px, and 400px.
+</pre>
+
+--------------
+File: 6_Image_Adaptation.html
+
+<picture>
+  <!-- Large screens get a wide image -->
+  <source
+    media="(min-width: 800px)"
+    srcset="https://picsum.photos/1000/300?random=1"
+  >
+
+  <!-- Medium screens get a medium image -->
+  <source
+    media="(min-width: 500px)"
+    srcset="https://picsum.photos/700/300?random=2"
+  >
+
+  <!-- Small screens get a smaller image -->
+  <img
+    src="https://picsum.photos/400/300?random=3"
+    alt="Landscape"
+    style="width: 100%; border-radius: 8px;"
+  >
+</picture>
+
+<pre>
+    <h3>Explanation</h3>
+&lt;picture&gt; allows you to provide different images based on viewport width.
+&lt;source&gt; with media acts like a conditional rule.
+Viewports 800px or wider get the 1000px wide image.
+Viewports 500–799px get the 700px wide image.
+
+The &lt;img&gt; element at the end is the fallback for viewports smaller than 500px.
+Small displays download a smaller image, which improves performance on mobile.
+</pre>
+
+--------------
+File: 7-Progressive_Enhancement_Using_Code.html
+
+<div id="cards">
+  <div>Card 1</div><div>Card 2</div><div>Card 3</div>
+</div>
+
+<script>
+const cards = document.getElementById('cards');
+function enhance() {
+  if (window.innerWidth > 700) {
+    cards.style.display = 'flex';
+    cards.style.overflowX = 'auto';
+  } else {
+    cards.style.display = 'block';
+  }
+}
+window.addEventListener('resize', enhance);
+enhance();
+</script>
+
+<style>
+#cards div { flex: 0 0 300px; margin: .5rem; background: #ddd; padding: 1rem; border-radius: 6px; }
+</style>
+
+--------------
+File: Lab_Part_1_Responsive_App_Development_Solution.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Flexbox Layout – Solution</title>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #ecf0f1;
+        }
+
+        /* 1️⃣ Header */
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 2️⃣ Navigation — Inline-block layout */
+        nav {
+            background: #34495e;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            display: inline-block;
+            /* places links horizontally */
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: #3b5998;
+            margin: 5px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background: #2b4162;
+        }
+
+        /* 3️⃣ Main content — Float layout */
+        main {
+            overflow: auto;
+            /* clears floats */
+            padding: 10px;
+        }
+
+        article {
+            float: left;
+            width: 70%;
+            background: white;
+            padding: 20px;
+            box-sizing: border-box;
+            /* include padding in width */
+            border-radius: 6px;
+        }
+
+        aside {
+            float: right;
+            width: 25%;
+            background: #bdc3c7;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 6px;
+        }
+
+        /* 4️⃣ Footer — Clear floats */
+        footer {
+            clear: both;
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        /* 5️⃣ Responsive stacking using media query */
+        @media (max-width: 700px) {
+
+            article,
+            aside {
+                float: none;
+                /* remove float behavior */
+                width: 100%;
+                /* full width */
+                margin-bottom: 10px;
+            }
+
+            nav a {
+                display: block;
+                /* stack nav links vertically */
+                margin: 5px auto;
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Pre-Flexbox Layout – Solution</h1>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </nav>
+
+    <main>
+        <article>
+            <h2>Main Content Area</h2>
+            <p>This section uses <strong>float: left</strong> to create a two-column layout. The sidebar is floated
+                right. The <strong>overflow: auto</strong> on the <code>main</code> element clears the floats,
+                preventing the footer from overlapping.</p>
+            <p>Try resizing the window — once you go below 700px, the layout switches to a single column.</p>
+        </article>
+
+        <aside>
+            <h3>Sidebar</h3>
+            <p>This sidebar is floated to the right. Notice how it wraps under the article on small screens due to the
+                media query.</p>
+        </aside>
+    </main>
+
+    <footer>
+        <p>Footer Section — stays below floated content.</p>
+    </footer>
+
+</body>
+
+</html>
+--------------
+File: 1_Basic.html
+
+<style>
+.container {
+  display: flex;          /* turns the div into a flex container */
+  gap: 10px;              /* space between items */
+  background: #f0f0f0;
+  padding: 10px;
+}
+
+.item {
+  background: #4CAF50;
+  color: white;
+  padding: 20px;
+  flex: 1;                /* each item takes equal width */
+  text-align: center;
+}
+</style>
+
+<div class="container">
+  <div class="item">Item 1</div>
+  <div class="item">Item 2</div>
+  <div class="item">Item 3</div>
+</div>
+
+<h3>Explanation</h3>
+<pre>
+<b>display: flex</b>  enables flex layout
+<b>flex: 1</b>        all items grow equally to fill the container
+<b>gap</b>            spacing between items
+</pre>
+
+--------------
+File: 2_Aligning_and_Distributing_Items.html
+
+<style>
+.container {
+  display: flex;
+  justify-content: space-between;  /* distributes items horizontally */
+  align-items: center;             /* aligns items vertically */
+  background: #f0f0f0;
+  height: 150px;
+  padding: 10px;
+}
+
+.item {
+  background: #FF5722;
+  color: white;
+  padding: 20px;
+  width: 100px;                     /* fixed width for demonstration */
+  text-align: center;
+  border:1px solid black;
+}
+</style>
+
+<div class="container">
+  <div class="item">Left</div>
+  <div class="item">Center</div>
+  <div class="item">Right</div>
+</div>
+
+<h3>Explanation</h3> 
+<pre>
+<b>justify-content: space-between</b> → first item sticks left, last sticks right, middle is spaced evenly
+<b>align-items: center</b> → vertical alignment inside the container
+
+You can change justify-content to <b>flex-start</b>, <b>flex-end</b>, <b>center</b>, or <b>space-around</b> to see different effects    
+</pre>
+<button onclick="document.querySelector('.container').style.justifyContent='left' ">justify-content: left;</button>
+<button onclick="document.querySelector('.container').style.justifyContent='center' ">justify-content: center;</button>
+<button onclick="document.querySelector('.container').style.justifyContent='space-between' ">justify-content: space-between;</button>
+<button onclick="document.querySelector('.container').style.justifyContent='right' ">justify-content: right;</button>
+<button onclick="document.querySelector('.container').style.justifyContent='space-evenly' ">justify-content: space-evenly;</button>
+--------------
+File: 3-Responsive_Flex_Layout_with_Wrapping_and_Order.html
+
+<style>
+.container {
+  display: flex;
+  flex-wrap: wrap;      /* allows items to wrap onto new lines */
+  gap: 10px;
+  background: #e0e0e0;
+  padding: 10px;
+}
+
+.item {
+  background: #2196F3;
+  color: white;
+  padding: 20px;
+  flex: 1 1 150px;      /* grow, shrink, base width 150px */
+  text-align: center;
+}
+
+/* Change order on small screens */
+@media (max-width: 600px) {
+  .item:nth-child(3) { order: -1; }  /* moves item 3 to the front */
+}
+</style>
+
+<div class="container">
+  <div class="item">One</div>
+  <div class="item">Two</div>
+  <div class="item">Three</div>
+  <div class="item">Four</div>
+</div>
+<h3>Explanation</h3>
+<pre>
+<b>flex-wrap: wrap</b> → items wrap to the next row if they don’t fit
+
+<b>flex: 1 1 150px</b> → items can grow, shrink, and start with 150px width
+
+<b>order</b> → lets you change the visual order without changing HTML
+
+<b>Media query - .item:nth-child(3) { order: -1; }</b> shows responsive behavior on small screens moves item 3 to the front
+
+</pre>
+
+--------------
+File: lab_1_Flex.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<h1>Lab>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Flex Lab</h1>
+    <ol>
+        <li>Build a nav bar that wraps on mobile, with justify-content adjusting spacing.</li>
+        <li>Create a card grid that grows/shrinks using <b>flex: 1 1 200px</b>.</li>
+        <li>Reorder flex items on mobile with order.</li>
+        <li>Nest flex containers for header + sub-items layout.</li>
+    </ol>
+    <h3>Think about...</h3>
+      <ul>
+        <li>Basic flex layout</li>
+        <li>Wrapping + responsive items</li>
+        <li>Grow/shrink examples</li>
+        <li>Order changes</li>
+        <li>Nested flex</li>
+      </ul>
+</body>
+
+</html>
+--------------
+File: lab_1_soloution.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexbox Demonstration</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 40px;
+            color: #2c3e50;
+        }
+
+        /* General Flex Styling */
+        .container {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .item {
+            background: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        /* Section 1 – Basic Flex */
+        #basic-flex .item {
+            flex: 1;
+            /* equal width for all items */
+        }
+
+        /* Section 2 – Justify + Align */
+        #alignment {
+            height: 120px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Section 3 – Grow, Shrink, Basis */
+        #grow-shrink .item:nth-child(1) {
+            flex: 1 1 100px;
+            background: #4CAF50;
+        }
+
+        #grow-shrink .item:nth-child(2) {
+            flex: 2 1 100px;
+            background: #FF9800;
+        }
+
+        #grow-shrink .item:nth-child(3) {
+            flex: 3 1 100px;
+            background: #9C27B0;
+        }
+
+        /* Section 4 – Wrapping */
+        #wrapping {
+            flex-wrap: wrap;
+        }
+
+        #wrapping .item {
+            flex: 1 1 150px;
+            background: #009688;
+        }
+
+        /* Section 5 – Order */
+        #order .item:nth-child(1) {
+            order: 2;
+            background: #E91E63;
+        }
+
+        #order .item:nth-child(2) {
+            order: 1;
+            background: #3F51B5;
+        }
+
+        #order .item:nth-child(3) {
+            order: 3;
+            background: #795548;
+        }
+
+        /* Section 6 – Nested Flex */
+        #nested .inner {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 5px;
+        }
+
+        #nested .inner div {
+            background: #FFC107;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        /* Section 7 – Align Content (multiple rows) */
+        #align-content {
+            flex-wrap: wrap;
+            align-content: space-around;
+            height: 200px;
+        }
+
+        #align-content .item {
+            flex: 1 1 100px;
+            background: #607D8B;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                background: #fafafa;
+            }
+
+            #order .item:nth-child(1) {
+                order: -1;
+            }
+
+            /* reorder first item on small screens */
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>All-in-One Flexbox Demonstration</h1>
+    <p>Resize the browser to see how items adapt, wrap, and reorder responsively.</p>
+
+    <h2>1️⃣ Basic Flex Layout</h2>
+    <div id="basic-flex" class="container">
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <div class="item">Item 3</div>
+    </div>
+
+    <h2>2️⃣ Justify & Align Items</h2>
+    <div id="alignment" class="container">
+        <div class="item">Left</div>
+        <div class="item">Middle</div>
+        <div class="item">Right</div>
+    </div>
+
+    <h2>3️⃣ Flex Grow, Shrink & Basis</h2>
+    <div id="grow-shrink" class="container">
+        <div class="item">1 1 100px</div>
+        <div class="item">2 1 100px</div>
+        <div class="item">3 1 100px</div>
+    </div>
+
+    <h2>4️⃣ Wrapping Items</h2>
+    <div id="wrapping" class="container">
+        <div class="item">A</div>
+        <div class="item">B</div>
+        <div class="item">C</div>
+        <div class="item">D</div>
+        <div class="item">E</div>
+    </div>
+
+    <h2>5️⃣ Order of Items</h2>
+    <div id="order" class="container">
+        <div class="item">First (order 2)</div>
+        <div class="item">Second (order 1)</div>
+        <div class="item">Third (order 3)</div>
+    </div>
+
+    <h2>6️⃣ Nested Flex Containers</h2>
+    <div id="nested" class="container">
+        <div class="item">
+            Outer 1
+            <div class="inner">
+                <div>A</div>
+                <div>B</div>
+            </div>
+        </div>
+        <div class="item">
+            Outer 2
+            <div class="inner">
+                <div>C</div>
+                <div>D</div>
+            </div>
+        </div>
+    </div>
+
+    <h2>7️⃣ Align Content (multiple rows)</h2>
+    <div id="align-content" class="container">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+    </div>
+
+</body>
+
+</html>
+--------------
+File: Lab_Part_1_Responsive_App_Development_Using_Flex__Solution.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Layout – Solution</title>
+
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #ecf0f1;
+    }
+
+    /* 1️⃣ Header */
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* 2️⃣ Navigation using Flexbox */
+    nav {
+      background: #34495e;
+      display: flex;
+      /* make links flex items */
+      justify-content: center;
+      /* center them horizontally */
+      flex-wrap: wrap;
+      /* wrap on small screens */
+      gap: 10px;
+      /* space between links */
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      background: #3b5998;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: #2b4162;
+    }
+
+    /* 3️⃣ Main content area using Flexbox */
+    main {
+      display: flex;
+      justify-content: space-between;
+      /* spread article and sidebar */
+      align-items: flex-start;
+      /* align to top */
+      gap: 20px;
+      padding: 20px;
+      flex-wrap: wrap;
+      /* allow wrapping for small screens */
+      background: #ecf0f1;
+    }
+
+    article {
+      flex: 3;
+      /* takes 3 parts of available space */
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    aside {
+      flex: 1;
+      /* takes 1 part of available space */
+      background: #bdc3c7;
+      padding: 20px;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    /* 4️⃣ Footer */
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 10px;
+    }
+
+    /* 5️⃣ Responsive stacking */
+    @media (max-width: 700px) {
+      main {
+        flex-direction: column;
+        /* stack article and sidebar */
+      }
+
+      nav {
+        flex-direction: column;
+        /* stack nav links vertically */
+        align-items: center;
+      }
+
+      nav a {
+        width: 80%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Flexbox Layout – Solution</h1>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <main>
+    <article>
+      <h2>Main Content Area</h2>
+      <p>This section now uses <strong>Flexbox</strong> for layout. Instead of floating elements, we simply set
+        <code>display: flex</code> on the <code>main</code> container and control spacing with
+        <code>justify-content</code> and <code>gap</code>.</p>
+      <p>The <code>article</code> expands to take up more space using <code>flex: 3</code>, while the <code>aside</code>
+        takes less space with <code>flex: 1</code>.</p>
+    </article>
+
+    <aside>
+      <h3>Sidebar</h3>
+      <p>The sidebar is now positioned automatically by the flex container — no floats needed! Resize the window to see
+        the <code>flex-direction: column</code> rule stack items vertically on smaller screens.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Footer Section — no float clearing required.</p>
+  </footer>
+
+</body>
+
+</html>
